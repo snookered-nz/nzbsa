@@ -4,43 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snooker Scores API Example</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
     <div id="result"></div>
 
     <script>
-        $(document).ready(function() {
-            $.ajax({
-                url: 'https://snookerscores.net/scoreboard/api/match/00630da7-9a77-4fb6-b25b-2aaeb83ca103?broadcastbar=true',
-                type: 'GET',
-                dataType: 'json',
-                headers: {
-                    'accept': '*/*',
-                    'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
-                    'priority': 'u=1, i',
-                    'referer': 'https://snookerscores.net/scoreboard/match/00630da7-9a77-4fb6-b25b-2aaeb83ca103/broadcast',
-                    'sec-ch-ua': '"Chromium";v="124", "Google Chrome";v="124", "Not-A.Brand";v="99"',
-                    'sec-ch-ua-mobile': '?0',
-                    'sec-ch-ua-platform': '"macOS"',
-                    'sec-fetch-dest': 'empty',
-                    'sec-fetch-mode': 'cors',
-                    'sec-fetch-site': 'same-origin',
-                    'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-                    'x-requested-with': 'XMLHttpRequest'
-                },
-                success: function(data) {
-                    // Process the response data here
-                    console.log(data);
-                    $('#result').html(JSON.stringify(data));
-                },
-                error: function(xhr, status, error) {
-                    // Handle errors here
-                    console.error('Error:', error);
-                    $('#result').html('Error: ' + error);
+        fetch('https://snookerscores.net/scoreboard/api/match/00630da7-9a77-4fb6-b25b-2aaeb83ca103')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                // Process the response data here
+                document.getElementById('result').innerHTML = JSON.stringify(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
             });
-        });
     </script>
 </body>
 </html>
